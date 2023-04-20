@@ -1,0 +1,20 @@
+.icon {
+  height: 1rem;
+  width: 1rem;
+}
+
+.btn {
+  background: none;
+  border: none;
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn:hover {
+  cursor: pointer;
+  background: #8fce4c;
+}

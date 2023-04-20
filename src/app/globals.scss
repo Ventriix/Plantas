@@ -1,8 +1,12 @@
+@import "variables";
+
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
   font-weight: normal;
+  transition: background 0.25s ease-in-out;
+  color: var(--content-color);
 }
 
 html, body {
