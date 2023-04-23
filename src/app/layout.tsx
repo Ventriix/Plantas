@@ -1,8 +1,11 @@
 import "./globals.scss";
-import { Inter } from "next/font/google";
+import { Roboto } from "next/font/google";
 import Providers from "@/app/providers";
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: "500",
+});
 
 export default function RootLayout({
   children,
@@ -14,7 +17,7 @@ export default function RootLayout({
       <head>
         <title>Plantas</title>
       </head>
-      <body className={inter.className}>
+      <body className={roboto.className}>
         <Providers>{children}</Providers>
       </body>
     </html>
