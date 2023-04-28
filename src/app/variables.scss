@@ -61,9 +61,39 @@
 
   --background-color: var(--neutral-100);
   --content-color: var(--neutral-900);
+
+  --button-primary-background: var(--primary-500);
+  --button-primary-hover: var(--primary-400);
+
+  --button-accent-green-background: var(--accent-green-500);
+  --button-accent-green-hover: var(--accent-green-400);
+
+  --button-accent-yellow-background: var(--accent-yellow-500);
+  --button-accent-yellow-hover: var(--accent-yellow-400);
+
+  --button-accent-red-background: var(--accent-red-500);
+  --button-accent-red-hover: var(--accent-red-400);
+
+  --button-neutral-background: var(--neutral-400);
+  --button-neutral-hover: var(--neutral-300);
 }
 
 [data-theme="dark"] {
   --background-color: var(--neutral-900);
   --content-color: var(--neutral-100);
+
+  --button-primary-background: var(--primary-500);
+  --button-primary-hover: var(--primary-400);
+
+  --button-accent-green-background: var(--accent-green-700);
+  --button-accent-green-hover: var(--accent-green-600);
+
+  --button-accent-yellow-background: var(--accent-yellow-500);
+  --button-accent-yellow-hover: var(--accent-yellow-400);
+
+  --button-accent-red-background: var(--accent-red-500);
+  --button-accent-red-hover: var(--accent-red-400);
+
+  --button-neutral-background: var(--neutral-700);
+  --button-neutral-hover: var(--neutral-600);
 }

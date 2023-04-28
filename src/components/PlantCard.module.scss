@@ -1,0 +1,59 @@
+.container {
+  width: 20rem;
+  height: fit-content;
+  padding-bottom: 2rem;
+  border-radius: 1rem;
+  background-color: var(--neutral-300);
+}
+
+.innerCard {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+
+  ul {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+
+    li {
+      border-radius: 1rem;
+    }
+  }
+}
+
+.tagButton {
+  padding: .25rem .75rem .25rem .75rem !important;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.description {
+  max-width: 80%;
+}
+
+.image {
+  width: 20rem;
+  height: 20rem;
+  border-radius: 1rem 1rem 0 0;
+}
+
+[data-theme="dark"] {
+  .container {
+    background-color: var(--neutral-800);
+
+    ul li {
+      background-color: var(--accent-green-500);
+
+      span {
+        color: var(--neutral-900);
+      }
+    }
+  }
+}

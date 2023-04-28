@@ -1,56 +1,61 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import { useState } from "react";
 import styles from "./Header.module.scss";
 
 export default function Header() {
+  const [loggedIn] = useState(false);
+
   return (
     <header className={styles.header}>
       <div className={styles.headerNavContainer}>
         <Image
-          alt="Placeholder Image"
-          src="https://placehold.co/300x80"
-          width={300}
-          height={80}
           className={styles.icon}
+          alt="Icon"
+          src="https://placehold.co/80x80"
+          height={0}
+          width={0}
         />
-        <nav aria-label="logged-in-nav">
+        <nav>
           <ul>
-            <li>
-              <Link href="/my-plants">
-                <button type="button" className={styles.navButton}>
-                  My Plants
-                </button>
-              </Link>
-            </li>
-            <li>
-              <Link href="/add-plant">
-                <button type="button" className={styles.navButton}>
-                  Add Plant
-                </button>
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      <div className={styles.headerAccountContainer}>
-        <ChevronDownIcon className={styles.mobileDropdownIcon} />
-        <nav aria-label="account-nav">
-          <ul>
-            <li>
-              <Link href="/login">
-                <button type="button" className={styles.navButton}>
-                  Login
-                </button>
-              </Link>
-            </li>
-            <li>
-              <Link href="/sign-up">
-                <button type="button" className={styles.navHighlightButton}>
-                  Sign Up For Free
-                </button>
-              </Link>
-            </li>
+            {!loggedIn && (
+              <ul>
+                <li>
+                  <Link href="/login">
+                    <button type="button" className="btn btnNeutral">
+                      Log In
+                    </button>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/signup">
+                    <button type="button" className="btn btnAccentGreen">
+                      Sign Up
+                    </button>
+                  </Link>
+                </li>
+              </ul>
+            )}
+            {loggedIn && (
+              <ul>
+                <li>
+                  <Link href="/">
+                    <button type="button" className={styles.navLink}>
+                      My Plants
+                    </button>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/">
+                    <button type="button" className={styles.navLink}>
+                      Log out
+                    </button>
+                  </Link>
+                </li>
+              </ul>
+            )}
           </ul>
         </nav>
       </div>

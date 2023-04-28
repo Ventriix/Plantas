@@ -11,6 +11,12 @@ const nextConfig = {
         hostname: "placehold.co",
         port: "",
         pathname: "/**x**"
+      },
+      {
+        protocol: "https",
+        hostname: "*",
+        port: "",
+        pathname: "**"
       }
     ]
   }

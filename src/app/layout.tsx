@@ -1,11 +1,18 @@
 import "./globals.scss";
-import { Roboto } from "next/font/google";
+import { Poppins } from "next/font/google";
 import Providers from "@/app/providers";
+import type { Metadata } from "next";
 
-const roboto = Roboto({
+const poppins = Poppins({
   subsets: ["latin"],
-  weight: "500",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--poppins-font",
 });
+
+export const metadata: Metadata = {
+  title: "Plantas",
+  description: "Plantas is a free plant assistant",
+};
 
 export default function RootLayout({
   children,
@@ -14,10 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <title>Plantas</title>
-      </head>
-      <body className={roboto.className}>
+      <body className={poppins.className}>
         <Providers>{children}</Providers>
       </body>
     </html>

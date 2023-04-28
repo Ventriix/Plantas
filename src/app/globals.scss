@@ -4,13 +4,12 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  font-family: var(--poppins-font);
   font-weight: normal;
-  transition: background 0.25s ease-in-out;
+  transition: background 0.25s ease-in-out, color 0.25s ease-in-out;
   color: var(--content-color);
-}
-
-html, body {
   max-width: 100vw;
+  overflow-x: hidden;
 }
 
 a {
@@ -18,6 +17,59 @@ a {
   text-decoration: none;
 }
 
-h1 {
-  font-weight: bold;
+.btn {
+  background: none;
+  border: none;
+  font-weight: 500;
+  font-size: 1rem;
+  border-radius: 5rem;
+  padding: .75rem 1rem .75rem 1rem;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.btnAccentGreen {
+  background-color: var(--button-accent-green-background);
+}
+
+.btnAccentGreen:hover {
+  background-color: var(--button-accent-green-hover)
+}
+
+.btnAccentRed {
+  background-color: var(--button-accent-red-background);
+}
+
+.btnAccentRed:hover {
+  background-color: var(--button-accent-red-hover)
+}
+
+.btnAccentYellow {
+  background-color: var(--button-accent-yellow-background);
+}
+
+.btnAccentYellow:hover {
+  background-color: var(--button-accent-yellow-hover)
+}
+
+.btnPrimary {
+  background-color: var(--button-primary-background);
+}
+
+.btnPrimary:hover {
+  background-color: var(--button-primary-hover)
+}
+
+.btnNeutral {
+  background-color: var(--button-neutral-background);
+}
+
+.btnNeutral:hover {
+  background-color: var(--button-neutral-hover);
+}
+
+.btnTransparent:hover {
+  color: var(--button-neutral-hover);
 }
