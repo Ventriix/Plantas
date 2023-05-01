@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
-import styles from "./ThemeSwitch.module.scss";
 
 const ThemeSwitch = ({ className }: { className?: string }) => {
   const [mounted, setMounted] = useState(false);
@@ -30,14 +29,14 @@ const ThemeSwitch = ({ className }: { className?: string }) => {
   return (
     <button
       type="button"
-      aria-label="Theme switch"
-      className={`${className} ${styles.btn}`}
+      aria-label="Theme Switch"
+      className={`${className} btn btnAccentGreen btnRound`}
       onClick={() => setTheme(inactiveTheme)}
     >
       {inactiveTheme === "light" ? (
-        <MoonIcon className={styles.icon} />
+        <MoonIcon className="smallIcon" />
       ) : (
-        <SunIcon className={styles.icon} />
+        <SunIcon className="smallIcon" />
       )}
     </button>
   );

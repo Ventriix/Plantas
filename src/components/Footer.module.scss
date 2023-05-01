@@ -1,10 +1,17 @@
 .footer {
   position: relative;
-  background-color: var(--background-color);
+  background-color: var(--neutral-200);
   height: 5rem;
   width: 100vw;
   display: flex;
   align-items: center;
-  background-color: #1B6765;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 1rem;
+  outline: .2rem solid var(--button-accent-green-background);
+}
+
+[data-theme="dark"] {
+  .footer {
+    background-color: var(--neutral-900);
+  }
 }

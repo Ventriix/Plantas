@@ -1,27 +1,25 @@
 "use client";
 
-import ThemeSwitch from "@/components/ThemeSwitch";
 import Header from "@/components/Header";
-import { useState } from "react";
 import PlantOverview from "@/components/PlantOverview";
 import Footer from "@/components/Footer";
-import styles from "./page.module.scss";
+import { useAuthContext } from "@/context/AuthContext";
+import styles from "./Home.module.scss";
 
 export default function Home() {
-  const [loggedIn] = useState(true);
+  const user = useAuthContext();
 
   return (
     <>
       <Header />
-      <main className={styles.main}>
-        {!loggedIn && (
+      <main>
+        {!user && (
           <>
-            <h1>Plantas</h1>
+            <h1 className={styles.title}>Plantas</h1>
             <h2>your free plant care assistant</h2>
-            <ThemeSwitch />
           </>
         )}
-        {loggedIn && <PlantOverview />}
+        {user && <PlantOverview />}
       </main>
       <Footer />
     </>

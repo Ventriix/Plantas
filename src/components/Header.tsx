@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useAuthContext } from "@/context/AuthContext";
 import styles from "./Header.module.scss";
 
 export default function Header() {
-  const [loggedIn] = useState(false);
+  const user = useAuthContext();
 
   return (
     <header className={styles.header}>
@@ -20,8 +20,8 @@ export default function Header() {
         />
         <nav>
           <ul>
-            {!loggedIn && (
-              <ul>
+            {!user && (
+              <>
                 <li>
                   <Link href="/login">
                     <button type="button" className="btn btnNeutral">
@@ -36,25 +36,25 @@ export default function Header() {
                     </button>
                   </Link>
                 </li>
-              </ul>
+              </>
             )}
-            {loggedIn && (
-              <ul>
+            {user && (
+              <>
                 <li>
                   <Link href="/">
-                    <button type="button" className={styles.navLink}>
+                    <button type="button" className="btn btnNeutral">
                       My Plants
                     </button>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/">
-                    <button type="button" className={styles.navLink}>
-                      Log out
+                  <Link href="/add-plant">
+                    <button type="button" className="btn btnAccentGreen">
+                      Add Plant
                     </button>
                   </Link>
                 </li>
-              </ul>
+              </>
             )}
           </ul>
         </nav>

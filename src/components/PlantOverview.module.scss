@@ -33,10 +33,6 @@
   gap: 1rem;
   padding-top: .25rem;
 
-  input:focus {
-    outline: solid var(--accent-green-500) .15rem;
-  }
-
   ul {
     list-style: none;
     display: flex;
@@ -70,17 +66,4 @@
 
 .tagDeleteButton {
   padding: 0 !important;
-}
-
-.searchBar {
-  padding: .5rem 1rem .5rem 1rem;
-  border-radius: 5rem;
-  background-color: var(--neutral-300);
-  border: none;
-}
-
-[data-theme="dark"] {
-  .searchBar {
-    background-color: var(--neutral-700);
-  }
 }

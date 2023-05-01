@@ -54,8 +54,8 @@ export default function PlantOverview() {
           .filter(
             (plant) =>
               plant.metadata.tags.includes(tag) ||
-              plant.name === tag ||
-              plant.description.includes(tag)
+              plant.name.toLowerCase() === tag ||
+              plant.description.toLowerCase().includes(tag)
           )
           .forEach((filteredPlant) => {
             if (!tempFilteredPlants.includes(filteredPlant)) {
@@ -72,9 +72,11 @@ export default function PlantOverview() {
 
   const addSearchTag = useCallback(
     (tag: string) => {
-      setSearchTags((prevState) => [...prevState, tag]);
+      if (!searchTags.includes(tag.toLowerCase())) {
+        setSearchTags((prevState) => [...prevState, tag.toLowerCase()]);
+      }
     },
-    [setSearchTags]
+    [searchTags, setSearchTags]
   );
 
   useEffect(() => {
@@ -88,7 +90,7 @@ export default function PlantOverview() {
         <input
           type="text"
           placeholder="Search"
-          className={styles.searchBar}
+          className="textField"
           value={searchBarInput}
           onChange={(event) => setSearchBarInput(event.target.value)}
           onKeyDown={(event) => {

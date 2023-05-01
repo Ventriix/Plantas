@@ -1,9 +1,9 @@
 .header {
   position: relative;
-  background-color: var(--background-color);
+  background-color: var(--neutral-200);
   height: 5rem;
   width: 100vw;
-  box-shadow: 0 .1rem .75rem var(--neutral-300);
+  outline: .2rem solid var(--button-accent-green-background);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -38,6 +38,6 @@
 
 [data-theme="dark"] {
   .header {
-    box-shadow: 0 .1rem .75rem var(--neutral-800);
+    background-color: var(--neutral-900);
   }
 }
