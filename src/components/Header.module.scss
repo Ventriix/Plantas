@@ -23,10 +23,6 @@
     list-style: none;
     justify-content: center;
     align-items: center;
-
-    li:hover {
-      color: var(--neutral-300);
-    }
   }
 }
 
@@ -34,6 +30,14 @@
   position: relative;
   width: 5rem;
   height: 5rem;
+}
+
+.smallText {
+  font-size: .75rem;
+
+  @media screen and (min-width: 420px) {
+    font-size: 1rem;
+  }
 }
 
 [data-theme="dark"] {

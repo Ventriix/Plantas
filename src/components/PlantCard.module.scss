@@ -1,4 +1,5 @@
 .container {
+  position: relative;
   width: 20rem;
   height: fit-content;
   padding-bottom: 2rem;
@@ -42,6 +43,45 @@
   width: 20rem;
   height: 20rem;
   border-radius: 1rem 1rem 0 0;
+}
+
+.timerContainer {
+  display: flex;
+  gap: .5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.timerTextContainer {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  margin-left: 1rem;
+
+  span {
+    font-weight: 600;
+  }
+
+  p {
+    font-size: .9rem;
+    font-weight: 500;
+  }
+}
+
+.trashIcon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.editIcon {
+  position: absolute;
+  top: 1rem;
+  right: 4rem;
+}
+
+.timerExpired {
+  color: var(--accent-red-500);
 }
 
 [data-theme="dark"] {

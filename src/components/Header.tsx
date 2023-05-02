@@ -42,14 +42,20 @@ export default function Header() {
               <>
                 <li>
                   <Link href="/">
-                    <button type="button" className="btn btnNeutral">
+                    <button
+                      type="button"
+                      className={`btn btnNeutral ${styles.smallText}`}
+                    >
                       My Plants
                     </button>
                   </Link>
                 </li>
                 <li>
                   <Link href="/add-plant">
-                    <button type="button" className="btn btnAccentGreen">
+                    <button
+                      type="button"
+                      className={`btn btnAccentGreen ${styles.smallText}`}
+                    >
                       Add Plant
                     </button>
                   </Link>
