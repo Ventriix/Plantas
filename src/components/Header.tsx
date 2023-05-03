@@ -11,13 +11,15 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.headerNavContainer}>
-        <Image
-          className={styles.icon}
-          alt="Icon"
-          src="https://placehold.co/80x80"
-          height={0}
-          width={0}
-        />
+        <Link href="/">
+          <Image
+            className={styles.icon}
+            alt="Icon"
+            src="/icon.png"
+            height={800}
+            width={800}
+          />
+        </Link>
         <nav>
           <ul>
             {!user && (

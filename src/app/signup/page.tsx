@@ -79,6 +79,14 @@ export default function AddPlant() {
             <input
               {...register("password", {
                 required: "This field is required",
+                minLength: {
+                  value: 6,
+                  message: "Minimum 6 characters",
+                },
+                maxLength: {
+                  value: 20,
+                  message: "Maximum 20 characters",
+                },
               })}
               type="password"
               className="textField"

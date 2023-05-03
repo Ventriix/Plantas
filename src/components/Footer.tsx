@@ -13,9 +13,14 @@ export default function Footer() {
 
   return (
     <footer className={styles.footer}>
-      <p>
-        <b>&copy;</b> Variaty Studios {new Date().getFullYear()}
-      </p>
+      <div>
+        <p>
+          <b>&copy;</b> Variaty Studios {new Date().getFullYear()}
+        </p>
+        <p>
+          <b>Not for public usage</b>
+        </p>
+      </div>
       <ThemeSwitch />
       {user && (
         <button

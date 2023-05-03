@@ -4,23 +4,23 @@ import Header from "@/components/Header";
 import PlantOverview from "@/components/PlantOverview";
 import Footer from "@/components/Footer";
 import { useAuthContext } from "@/context/AuthContext";
-import styles from "./Home.module.scss";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const user = useAuthContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, []);
 
   return (
     <>
       <Header />
-      <main>
-        {!user && (
-          <>
-            <h1 className={styles.title}>Plantas</h1>
-            <h2>your free plant care assistant</h2>
-          </>
-        )}
-        {user && <PlantOverview />}
-      </main>
+      <main>{user && <PlantOverview />}</main>
       <Footer />
     </>
   );

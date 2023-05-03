@@ -32,8 +32,8 @@
 }
 
 .canvas {
-  height: 15rem;
-  width: 15rem;
+  height: 90%;
+  width: 90%;
   border-radius: 1rem;
 }
 
@@ -50,6 +50,11 @@
   p {
     font-size: 1.5rem;
     font-weight: 600;
+  }
+
+  canvas {
+    height: 20rem;
+    width: 20rem;
   }
 }
 
