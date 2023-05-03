@@ -18,6 +18,9 @@
   ul {
     list-style: none;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     gap: 1rem;
 
     li {
@@ -82,6 +85,10 @@
 
 .timerExpired {
   color: var(--accent-red-500);
+}
+
+.icon {
+  fill: var(--content-color);
 }
 
 [data-theme="dark"] {

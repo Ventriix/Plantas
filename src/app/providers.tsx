@@ -5,9 +5,9 @@ import { AuthContextProvider } from "@/context/AuthContext";
 
 function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <AuthContextProvider>
-      <ThemeProvider>{children}</ThemeProvider>
-    </AuthContextProvider>
+    <ThemeProvider>
+      <AuthContextProvider>{children}</AuthContextProvider>
+    </ThemeProvider>
   );
 }
 

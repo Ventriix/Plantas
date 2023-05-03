@@ -24,6 +24,7 @@ const useCountdown = (targetDate: Date) => {
     hours: format(Math.floor((time / 3600) % 24)),
     minutes: format(Math.floor((time / 60) % 60)),
     seconds: format(time % 60),
+    setTime,
   };
 };
 

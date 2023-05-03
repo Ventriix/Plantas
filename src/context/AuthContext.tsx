@@ -2,6 +2,7 @@
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import firebaseApp from "@/firebase/config";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import LoadingPage from "@/components/LoadingPage";
 
 const auth = getAuth(firebaseApp);
 export const AuthContext = createContext<User | null>(null);
@@ -28,7 +29,7 @@ export const AuthContextProvider = ({
 
   return (
     <AuthContext.Provider value={memoizedUser}>
-      {!loading && children}
+      {!loading ? children : <LoadingPage />}
     </AuthContext.Provider>
   );
 };

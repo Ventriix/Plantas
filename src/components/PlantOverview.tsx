@@ -7,6 +7,7 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import queryDocumentsWhere from "@/firebase/firestore/queryDocuments";
 import { useAuthContext } from "@/context/AuthContext";
 import Link from "next/link";
+import { Dna } from "react-loader-spinner";
 import styles from "./PlantOverview.module.scss";
 
 export default function PlantOverview() {
@@ -44,7 +45,7 @@ export default function PlantOverview() {
       },
     },
   ]); */
-  const [plants] = useState<Plant[] | undefined>(undefined);
+  const [plants, setPlants] = useState<Plant[] | undefined>(undefined);
   const [searchTags, setSearchTags] = useState<string[]>([]);
   const [searchBarInput, setSearchBarInput] = useState("");
   const [filteredPlants, setFilteredPlants] = useState<Plant[] | undefined>(
@@ -96,17 +97,38 @@ export default function PlantOverview() {
     const firestorePlants = await queryDocumentsWhere(
       "user_plants",
       "owning_user",
-      "test"
+      user!.uid
     );
 
+    const newPlants: Plant[] = [];
+
     firestorePlants.result!.docs.forEach((plant) => {
-      console.log(plant.get("description"));
+      newPlants.push({
+        id: plant.get("id"),
+        name: plant.get("name"),
+        description: plant.get("description"),
+        images: plant.get("images"),
+        metadata: {
+          created_at: plant.get("created_at"),
+          updated_at: plant.get("updated_at"),
+          last_watering: plant.get("last_watering"),
+          next_watering: plant.get("next_watering"),
+          watering_interval_secs: plant.get("watering_interval_secs"),
+          tags: plant.get("tags"),
+        },
+      });
     });
+
+    setPlants(newPlants);
   }
 
   useEffect(() => {
-    // GetPlantsFromDatabase();
-  });
+    GetPlantsFromDatabase();
+  }, []);
+
+  useEffect(() => {
+    filterByTags();
+  }, [plants]);
 
   return (
     <div className={styles.container}>
@@ -149,7 +171,7 @@ export default function PlantOverview() {
             ))}
         </ul>
       </div>
-      {filteredPlants && filteredPlants.length > 0 && (
+      {plants && filteredPlants && filteredPlants.length > 0 && (
         <ul className={styles.plantContainer}>
           {filteredPlants.map((plant) => (
             <li key={plant.name}>
@@ -158,14 +180,21 @@ export default function PlantOverview() {
           ))}
         </ul>
       )}
-      {(!filteredPlants || (filteredPlants && filteredPlants.length === 0)) && (
-        <div className={styles.noPlantsContainer}>
-          <p>You have no plants.</p>
-          <Link href="/add-plant">
-            <button type="button" className="btn btnAccentGreen">
-              Add Plant
-            </button>
-          </Link>
+      {plants &&
+        (!filteredPlants ||
+          (filteredPlants && filteredPlants.length === 0)) && (
+          <div className={styles.noPlantsContainer}>
+            <p>You have no plants.</p>
+            <Link href="/add-plant">
+              <button type="button" className="btn btnAccentGreen">
+                Add Plant
+              </button>
+            </Link>
+          </div>
+        )}
+      {!plants && (
+        <div className={styles.plantContainer}>
+          <Dna visible height={80} width={80} ariaLabel="Loading" />
         </div>
       )}
     </div>

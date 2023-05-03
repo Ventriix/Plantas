@@ -11,7 +11,6 @@ import setDocument from "@/firebase/firestore/setDocument";
 import { uuidv4 } from "@firebase/util";
 import Image from "next/image";
 import getFile from "@/firebase/storage/getFile";
-import updateDocument from "@/firebase/firestore/updateDocument";
 import { useRouter } from "next/navigation";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import overviewStyles from "@/components/PlantOverview.module.scss";
@@ -45,15 +44,15 @@ export default function AddPlant() {
   const [loading, setLoading] = useState(false);
   const icon = watch("icon");
   const [iconBase64, setIconBase64] = useState("");
+  const [iconBlob, setIconBlob] = useState<Blob | null>(null);
   const router = useRouter();
-  const [searchTags, setSearchTags] = useState<string[]>([]);
-  const [searchBarInput, setSearchBarInput] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagBarInput, setTagBarInput] = useState("");
   const iconSelectRef = useRef<HTMLInputElement | null>(null);
   const [iconCrop, setIconCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
   const [showIconCrop, setShowIconCrop] = useState(false);
   const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
-  const blobUrlRef = useRef("");
   const iconRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
@@ -70,6 +69,15 @@ export default function AddPlant() {
     };
   }, [icon]);
 
+  async function dataUrlToFile(
+    dataUrl: string,
+    fileName: string
+  ): Promise<File> {
+    const res: Response = await fetch(dataUrl);
+    const blob: Blob = await res.blob();
+    return new File([blob], fileName, { type: "image/png" });
+  }
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const totalWateringSecs =
       data.days * 86400 + data.hours * 3600 + data.minutes * 60;
@@ -85,60 +93,58 @@ export default function AddPlant() {
     const timestamp = Date.now();
     const plantId = uuidv4();
 
-    const documentResult = await setDocument(`user_plants`, plantId, {
-      id: plantId,
-      name: data.name,
-      description: data.description,
-      images: [],
-      metadata: {
-        owning_user: user!.uid,
-        created_at: timestamp,
-        updated_at: timestamp,
-        last_watering: timestamp,
-        next_watering: timestamp + totalWateringSecs * 1000,
-        watering_interval_secs: totalWateringSecs,
-        tags: ["test"],
-      },
-    });
+    const path = `/user_plants/${user!.uid}/${plantId}/0`;
 
-    setUploadError(!!documentResult.error);
+    uploadFile(await dataUrlToFile(iconBase64, "0.png"), path, {
+      owning_user: user!.uid,
+      related_plant: plantId,
+    })
+      .then(async ({ task, error }) => {
+        setUploadError(!!error);
 
-    if (!documentResult.error) {
-      const path = `/user_plants/${user!.uid}/${plantId}/0`;
+        if (!error) {
+          task!.then(async () => {
+            const iconUrlResult = await getFile(path);
+            setUploadError(!!iconUrlResult.error);
 
-      const iconResult = await uploadFile(data.icon[0], path, {
-        owning_user: user!.uid,
-        related_plant: plantId,
+            if (!iconUrlResult.error) {
+              const documentResult = await setDocument(`user_plants`, plantId, {
+                id: plantId,
+                name: data.name,
+                description: data.description,
+                images: [iconUrlResult.result],
+                owning_user: user!.uid,
+                created_at: timestamp,
+                updated_at: timestamp,
+                last_watering: timestamp,
+                next_watering: timestamp + totalWateringSecs * 1000,
+                watering_interval_secs: totalWateringSecs,
+                tags,
+              });
+
+              setUploadError(!!documentResult.error);
+
+              if (!documentResult.error) {
+                router.push("/");
+              }
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        setUploadError(!!error);
       });
 
-      setUploadError(!!iconResult.error);
-
-      if (!iconResult.error) {
-        iconResult.task!.then(async () => {
-          const iconUrlResult = await getFile(path);
-
-          if (!iconUrlResult.error) {
-            const imageResult = await updateDocument("user_plants", plantId, {
-              images: [iconUrlResult.result],
-            });
-
-            setUploadError(!!imageResult.error);
-          }
-        });
-      }
-    }
-
     setLoading(false);
-    router.push("/");
   };
 
-  const addSearchTag = useCallback(
+  const addTag = useCallback(
     (tag: string) => {
-      if (!searchTags.includes(tag.toLowerCase())) {
-        setSearchTags((prevState) => [...prevState, tag.toLowerCase()]);
+      if (!tags.includes(tag.toLowerCase())) {
+        setTags((prevState) => [...prevState, tag.toLowerCase()]);
       }
     },
-    [searchTags, setSearchTags]
+    [tags, setTags]
   );
 
   function CropIcon() {
@@ -153,12 +159,12 @@ export default function AddPlant() {
         return;
       }
 
-      if (blobUrlRef.current) {
-        URL.revokeObjectURL(blobUrlRef.current);
+      if (iconBase64.length > 0) {
+        URL.revokeObjectURL(iconBase64);
       }
 
-      blobUrlRef.current = URL.createObjectURL(blob);
-      setIconBase64(blobUrlRef.current);
+      setIconBlob(blob);
+      setIconBase64(URL.createObjectURL(blob));
     });
   }
 
@@ -180,6 +186,7 @@ export default function AddPlant() {
               ruleOfThirds
               minHeight={20}
               minWidth={20}
+              className={styles.canvas}
             >
               {iconBase64 && (
                 <Image
@@ -192,6 +199,12 @@ export default function AddPlant() {
                 />
               )}
             </ReactCrop>
+            {completedCrop && (
+              <div className={styles.previewContainer}>
+                <p>Preview</p>
+                <canvas ref={previewCanvasRef} className={styles.canvas} />
+              </div>
+            )}
             <button
               type="button"
               className="btn btnAccentGreen"
@@ -199,14 +212,6 @@ export default function AddPlant() {
             >
               Finish Crop
             </button>
-            {!!completedCrop && (
-              <canvas
-                ref={previewCanvasRef}
-                style={{
-                  display: "none",
-                }}
-              />
-            )}
           </div>
         )}
         {!showIconCrop && (
@@ -273,12 +278,6 @@ export default function AddPlant() {
               <div className="inputContainer">
                 <p>Icon</p>
                 {errors.icon && <span>This field is required</span>}
-                {uploadError && (
-                  <span>
-                    An error occured while uploading your plant. Please try
-                    again later.
-                  </span>
-                )}
                 <div className={styles.fileSelectContainer}>
                   <button
                     type="button"
@@ -297,7 +296,7 @@ export default function AddPlant() {
                     accept="image/*"
                   />
                 </div>
-                {iconBase64 && (
+                {iconBase64.length > 0 && (
                   <Image
                     src={iconBase64}
                     alt="Plant Icon"
@@ -312,19 +311,19 @@ export default function AddPlant() {
                   type="text"
                   placeholder="Add Tag(s)"
                   className="textField"
-                  value={searchBarInput}
-                  onChange={(event) => setSearchBarInput(event.target.value)}
+                  value={tagBarInput}
+                  onChange={(event) => setTagBarInput(event.target.value)}
                   onKeyDown={(event) => {
-                    if (event.key === "Enter" && searchBarInput.length > 0) {
+                    if (event.key === "Enter" && tagBarInput.length > 0) {
                       event.preventDefault();
-                      addSearchTag(searchBarInput);
-                      setSearchBarInput("");
+                      addTag(tagBarInput);
+                      setTagBarInput("");
                     }
                   }}
                 />
-                {searchTags.length > 0 && (
+                {tags.length > 0 && (
                   <ul>
-                    {searchTags.map((tag, index) => (
+                    {tags.map((tag, index) => (
                       <li key={tag}>
                         <div
                           className={`btn btnAccentGreen ${overviewStyles.tagButton}`}
@@ -332,8 +331,8 @@ export default function AddPlant() {
                           {tag}
                           <button
                             onClick={() =>
-                              setSearchTags(
-                                searchTags.filter(
+                              setTags(
+                                tags.filter(
                                   (otherTag, otherIndex) => otherIndex !== index
                                 )
                               )
@@ -351,6 +350,12 @@ export default function AddPlant() {
                   </ul>
                 )}
               </div>
+              {uploadError && (
+                <span className={styles.error}>
+                  An error occured while uploading your plant. Please try again
+                  later.
+                </span>
+              )}
               <button
                 type="submit"
                 className="btn btnAccentGreen"
