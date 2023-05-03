@@ -63,6 +63,11 @@ main {
   gap: 1rem;
   padding: .25rem;
   text-align: left;
+
+  span {
+      font-weight: 600;
+      color: var(--accent-red-500);
+  }
 }
 
 .btn {
@@ -157,6 +162,11 @@ main {
 .smallIcon {
   height: 1.5rem;
   width: 1.5rem;
+}
+
+.error {
+  font-weight: 600;
+  color: var(--accent-red-500);
 }
 
 [data-theme="dark"] {

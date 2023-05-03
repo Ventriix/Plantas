@@ -6,6 +6,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import login from "@/firebase/auth/login";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import getMessageFromCode from "@/firebase/errorConverter";
 
 type Inputs = {
   email: string;
@@ -20,15 +21,19 @@ export default function AddPlant() {
   } = useForm<Inputs>();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
-    const { result, error } = await login(data.email, data.password);
-    setLoading(false);
+    const result = await login(data.email, data.password);
 
-    if (!error) {
+    if (!result.error) {
       router.push("/");
+    } else {
+      setError(getMessageFromCode(result.error!.toString())!);
     }
+
+    setLoading(false);
   };
 
   return (
@@ -38,6 +43,7 @@ export default function AddPlant() {
         <h1 className="title">Login</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="form">
           <div className="inputContainer">
+            {error.length > 0 && <span>{error}</span>}
             {errors.email && <span>This field is required</span>}
             <input
               {...register("email", { required: true })}

@@ -3,6 +3,8 @@
   width: 20rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 2rem;
 
   @media screen and (min-width: 1200px) {

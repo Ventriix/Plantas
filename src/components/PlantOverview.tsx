@@ -133,6 +133,11 @@ export default function PlantOverview() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>My Plants</h1>
+      <Link href="/add-plant">
+        <button type="button" className="btn btnAccentGreen">
+          Add Plant
+        </button>
+      </Link>
       <div className={styles.searchContainer}>
         <input
           type="text"

@@ -69,6 +69,12 @@ export default function AddPlant() {
     };
   }, [icon]);
 
+  useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, []);
+
   async function dataUrlToFile(
     dataUrl: string,
     fileName: string
@@ -351,7 +357,7 @@ export default function AddPlant() {
                 )}
               </div>
               {uploadError && (
-                <span className={styles.error}>
+                <span className="error">
                   An error occured while uploading your plant. Please try again
                   later.
                 </span>
