@@ -45,6 +45,7 @@ export default function PlantCard({
   async function DeletePlant() {
     await deleteDocument("user_plants", plant.id);
     await deleteFile(`/user_plants/${user!.uid}/${plant.id}/0`);
+    window.location.reload();
   }
 
   return (
