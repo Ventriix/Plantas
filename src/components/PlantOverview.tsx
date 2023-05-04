@@ -190,11 +190,6 @@ export default function PlantOverview() {
           (filteredPlants && filteredPlants.length === 0)) && (
           <div className={styles.noPlantsContainer}>
             <p>You have no plants.</p>
-            <Link href="/add-plant">
-              <button type="button" className="btn btnAccentGreen">
-                Add Plant
-              </button>
-            </Link>
           </div>
         )}
       {!plants && (
