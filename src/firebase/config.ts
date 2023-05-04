@@ -1,5 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { getApps, initializeApp } from "firebase/app";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { initializeAppCheck, ReCaptchaV3Provider } from "@firebase/app-check";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,4 +14,12 @@ const firebaseConfig = {
 
 const firebaseApp =
   getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+
+const appCheck = initializeAppCheck(firebaseApp, {
+  provider: new ReCaptchaV3Provider(
+    process.env.NEXT_PUBLIC_FIREBASE_RECAPTCHA_V3_SITE_KEY!
+  ),
+  isTokenAutoRefreshEnabled: true,
+});
+
 export default firebaseApp;
