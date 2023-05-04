@@ -15,11 +15,13 @@ const firebaseConfig = {
 const firebaseApp =
   getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
-const appCheck = initializeAppCheck(firebaseApp, {
-  provider: new ReCaptchaV3Provider(
-    process.env.NEXT_PUBLIC_FIREBASE_RECAPTCHA_V3_SITE_KEY!
-  ),
-  isTokenAutoRefreshEnabled: true,
-});
+if (typeof window !== "undefined") {
+  const appCheck = initializeAppCheck(firebaseApp, {
+    provider: new ReCaptchaV3Provider(
+      process.env.NEXT_PUBLIC_FIREBASE_RECAPTCHA_V3_SITE_KEY!
+    ),
+    isTokenAutoRefreshEnabled: true,
+  });
+}
 
 export default firebaseApp;
